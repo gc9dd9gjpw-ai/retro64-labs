@@ -1,0 +1,174 @@
+name: Actualizar descargas Retro64 Labs
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-download-counts.yml'
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: retro64-download-counts
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Leer descargas reales de GitHub y corregir la web
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PYCODE'
+          import json
+          import os
+          from pathlib import Path
+          import re
+          from urllib.request import Request, urlopen
+          
+          OWNER = "gc9dd9gjpw-ai"
+          REPOSITORIES = {
+              "ocarina": "Ocarina-Memory-Editor-Analogue-3D",
+              "majora": "majora-memory-studio",
+              "manager": "sc64-enhanced-manager",
+              "premium": "sc64-premium",
+          }
+          PATTERNS = {
+              "ocarina": re.compile(r"^Ocarina[-_]Memory[-_]Editor.*Windows\.zip$", re.I),
+              "majora": re.compile(r"^Majora[-_]Memory[-_](Studio|Editor).*Windows\.zip$", re.I),
+              "manager": re.compile(r"^SC64[-_]Enhanced[-_]Manager.*\.zip$", re.I),
+              "premium": re.compile(r"^SC64[-_](Enhanced[-_])?Premium.*\.zip$", re.I),
+          }
+          
+          def get_releases(repo, page):
+              url = f"https://api.github.com/repos/{OWNER}/{repo}/releases?per_page=100&page={page}"
+              req = Request(url, headers={
+                  "Accept": "application/vnd.github+json",
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "User-Agent": "retro64-labs-download-counter",
+              })
+              with urlopen(req, timeout=25) as response:
+                  result = json.load(response)
+              if not isinstance(result, list):
+                  raise RuntimeError(f"GitHub devuelve un formato inesperado para {repo}")
+              return result
+          
+          def count_releases(project, repo):
+              total = 0
+              for page in range(1, 31):
+                  releases = get_releases(repo, page)
+                  for release in releases:
+                      if release.get("draft"):
+                          continue
+                      for asset in release.get("assets", []):
+                          name = asset.get("name", "")
+                          number = asset.get("download_count")
+                          if (asset.get("state") == "uploaded" and isinstance(number, int)
+                                  and number >= 0 and PATTERNS[project].fullmatch(name)
+                                  and not re.search(r"fuentes|source|compilacion|compilation|symbols|debug", name, re.I)):
+                              total += number
+                  if len(releases) < 100:
+                      return total
+              raise RuntimeError(f"Demasiadas paginas de releases para {repo}")
+          
+          counts = {name: count_releases(name, repo) for name, repo in REPOSITORIES.items()}
+          print("Descargas actuales:", counts)
+          
+          # Only modify current counter module the first time. Keep HTML, styles and download URLs untouched.
+          jsfile = Path("assets/app.js")
+          js = jsfile.read_text(encoding="utf-8")
+          start = js.find("const DOWNLOAD_REPOS = {")
+          end = js.find("const $ = selector", start) if start >= 0 else -1
+          if start >= 0 and end > start:
+              replacement = """const downloadCounts = new Map();
+          const COUNTS_URL = "https://raw.githubusercontent.com/gc9dd9gjpw-ai/retro64-labs/main/assets/download-counts.json";
+          function downloadsLabel(project) {
+            const value = downloadCounts.get(project.id);
+            const label = language === 'es' ? 'Descargas' : 'Downloads';
+            if (value === undefined || value === null) return label + ': …';
+            return label + ': ' + new Intl.NumberFormat(language === 'es' ? 'es-ES' : 'en-US').format(value);
+          }
+          async function checkDownloadCounts() {
+            async function loadCounts(url) {
+              const response = await fetch(url, {cache: 'no-store'});
+              if (!response.ok) throw new Error('No se pueden cargar los contadores');
+              const data = await response.json();
+              if (!data || !data.counts) throw new Error('Formato de contadores incorrecto');
+              for (const p of PROJECTS) {
+                const v = data.counts[p.id];
+                if (!Number.isSafeInteger(v) || v < 0) throw new Error('Contador inválido: ' + p.id);
+              }
+              return data.counts;
+            }
+            let values;
+            try {
+              // Read branch data directly, even if Pages has not rebuilt.
+              const fiveMinuteBucket = Math.floor(Date.now() / 300000);
+              values = await loadCounts(COUNTS_URL + '?v=' + fiveMinuteBucket);
+            } catch (_) {
+              try { values = await loadCounts(new URL('assets/download-counts.json', document.baseURI).href); }
+              catch (_) { return; }
+            }
+            for (const p of PROJECTS) downloadCounts.set(p.id, values[p.id]);
+            renderProjects();
+          }
+          
+          """
+              jsfile.write_text(js[:start] + replacement + js[end:], encoding="utf-8")
+              print("Primera ejecucion: modificado solamente el contador de assets/app.js")
+          elif 'const COUNTS_URL = ' in js and 'checkDownloadCounts()' in js:
+              print("La web ya esta preparada para usar el archivo JSON")
+          else:
+              raise RuntimeError("El modulo del contador de la web ha cambiado; no modificaremos assets/app.js")
+          
+          out = Path("assets/download-counts.json")
+          out.write_text(json.dumps({"counts": counts}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          PYCODE
+      - name: Guardar los contadores si cambiaron
+        id: save
+        shell: bash
+        run: |
+          if git diff --quiet -- assets/app.js assets/download-counts.json &&
+             [ -z "$(git ls-files --others --exclude-standard assets/download-counts.json)" ]; then
+            echo "No hay nuevos cambios."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/app.js assets/download-counts.json
+          git commit -m "chore: actualizar descargas de Retro64 Labs"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Solicitar reconstruccion de GitHub Pages
+        if: steps.save.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          HTTP_CODE=$(curl --location --silent --output /tmp/retro64-pages-build.json --write-out '%{http_code}' \
+            -X POST \
+            -H 'Accept: application/vnd.github+json' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/pages/builds")
+          if [ "$HTTP_CODE" = '201' ]; then
+            echo "GitHub Pages: reconstruccion solicitada."
+          else
+            echo "AVISO: no se pudo iniciar reconstruccion de Pages (HTTP $HTTP_CODE)."
+            cat /tmp/retro64-pages-build.json
+            echo "Los contadores siguen disponibles desde GitHub Raw; la primera actualizacion de app.js puede necesitar un redespliegue manual."
+          fi
