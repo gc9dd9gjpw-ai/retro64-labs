@@ -90,6 +90,62 @@ let filter = 'all';
 let searchTerm = '';
 let currentProjectId = null;
 const releases = new Map();
+
+const DOWNLOAD_REPOS = {
+  ocarina: "gc9dd9gjpw-ai/Ocarina-Memory-Editor-Analogue-3D",
+  majora: "gc9dd9gjpw-ai/majora-memory-studio",
+  manager: "gc9dd9gjpw-ai/sc64-enhanced-manager",
+  premium: "gc9dd9gjpw-ai/sc64-premium"
+};
+const downloadCounts = new Map();
+function isProgramAsset(project, asset) {
+  const name = asset.name || "";
+  if (asset.state !== "uploaded" || !Number.isSafeInteger(asset.download_count) || asset.download_count < 0) return false;
+  if (/(fuentes|source|compilacion|compilation|symbols|debug)/i.test(name)) return false;
+  const patterns = {
+    ocarina: /^Ocarina[-_]Memory[-_]Editor.*Windows\.zip$/i,
+    majora: /^Majora[-_]Memory[-_](Studio|Editor).*Windows\.zip$/i,
+    manager: /^SC64[-_]Enhanced[-_]Manager.*\.zip$/i,
+    premium: /^SC64[-_](Enhanced[-_])?Premium.*\.zip$/i
+  };
+  return Boolean(patterns[project.id]?.test(name));
+}
+function downloadsLabel(project) {
+  const value = downloadCounts.get(project.id);
+  const label = language === 'es' ? 'Descargas' : 'Downloads';
+  if (value === undefined) return label + ': …';
+  if (value === null) return label + ': ' + (language === 'es' ? 'no disponible' : 'unavailable');
+  return label + ': ' + new Intl.NumberFormat(language === 'es' ? 'es-ES' : 'en-US').format(value);
+}
+async function countProjectDownloads(project) {
+  const repo = DOWNLOAD_REPOS[project.id];
+  if (!repo) return null;
+  let total = 0;
+  for (let page = 1; ; page++) {
+    const response = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=100&page=${page}`, {
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: AbortSignal.timeout(15000)
+    });
+    if (!response.ok) throw new Error('Downloads unavailable');
+    const rows = await response.json();
+    if (!Array.isArray(rows)) throw new Error('Invalid releases response');
+    for (const release of rows) {
+      if (release.draft) continue;
+      for (const asset of release.assets || []) {
+        if (isProgramAsset(project, asset)) total += asset.download_count;
+      }
+    }
+    if (rows.length < 100) return total;
+  }
+}
+async function checkDownloadCounts() {
+  await Promise.all(PROJECTS.map(async project => {
+    try { downloadCounts.set(project.id, await countProjectDownloads(project)); }
+    catch { downloadCounts.set(project.id, null); }
+  }));
+  renderProjects();
+}
+
 const $ = selector => document.querySelector(selector);
 const t = key => TRANSLATIONS[language][key] || key;
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -110,6 +166,7 @@ function card(project){
   const summary = project.description[language];
   return `<article class="project-card"><div class="card-art" data-art="${project.art}"><span class="art-top-label">RETRO64 / ${escapeHTML(project.id.toUpperCase())}</span>${projectArt(project)}<span class="art-artifact">${escapeHTML(project.id.toUpperCase())}</span></div>
     <div class="project-body"><div class="card-tags"><span class="type-tag">${escapeHTML(categoryLabel(project))}</span><span class="platform-tag">${escapeHTML(project.platform)}</span></div><h3>${escapeHTML(project.name)}</h3><p>${escapeHTML(summary)}</p>
+    <p class="download-count" title="${language === 'es' ? 'Total de ZIP de programa descargados desde GitHub, incluyendo versiones anteriores y betas.' : 'Total program ZIP downloads from GitHub, including previous versions and betas.'}">${escapeHTML(downloadsLabel(project))}</p>
     <div class="card-footer"><span class="status ${release.url?'available':''}">${release.url?t('published'):t('unpublished')}</span><div class="card-actions"><button class="card-link" data-details="${project.id}" aria-label="${escapeHTML(t('seeDetails')+' '+project.name)}">${t('seeDetails')} →</button></div></div></div></article>`;
 }
 function renderProjects() {
@@ -179,5 +236,6 @@ function init(){
   $('#detail-dialog').addEventListener('close',()=>{currentProjectId=null;});
   renderLanguage();
   checkReleases();
+  checkDownloadCounts();
 }
 init();
