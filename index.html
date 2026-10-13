@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090d1e">
+  <meta name="description" content="Retro64 Labs — software y herramientas para Nintendo 64, SummerCart64 y Analogue 3D.">
+  <title>RETRO64 LABS — Software y proyectos</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <div class="aura aura-one" aria-hidden="true"></div><div class="aura aura-two" aria-hidden="true"></div>
+  <header class="topbar"><div class="bar-inner">
+    <a href="#inicio" class="brand" aria-label="Retro64 Labs - Inicio"><span class="brand-mark">R<span>64</span></span><span class="brand-name">RETRO<span>64</span> <em>LABS</em></span></a>
+    <nav class="nav-links" aria-label="Navegación principal"><a href="#proyectos" data-i18n="navProjects">Proyectos</a><a href="#acerca" data-i18n="navAbout">Acerca de</a></nav>
+    <div class="bar-actions"><button class="lang-btn" id="language" aria-label="Cambiar idioma"><span id="language-label">EN</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a16 16 0 010 18M12 3a16 16 0 000 18"/></svg></button><a class="header-cta" href="#proyectos" data-i18n="explore">Explorar software <span>↗</span></a></div>
+  </div></header>
+  <main id="inicio">
+    <section class="hero section-wrap">
+      <div class="hero-copy"><div class="eyebrow"><span class="pulse"></span><span data-i18n="eyebrow">LABORATORIO INDEPENDIENTE · N64 / ANALOGUE 3D</span></div>
+        <h1><span data-i18n="hero1">El pasado merece</span><br><span class="glow-text" data-i18n="hero2">herramientas del futuro.</span></h1>
+        <p class="hero-lead" data-i18n="heroLead">Editores de partidas, gestores de trucos y experiencias nuevas para Nintendo 64. Proyectos creados con pasión por el hardware original.</p>
+        <div class="hero-buttons"><a href="#proyectos" class="button button-primary"><span data-i18n="viewProjects">Ver proyectos</span><span>↗</span></a><a href="#acerca" class="button button-secondary" data-i18n="learnMore">Conocer el laboratorio</a></div>
+        <div class="mini-stats"><div><strong id="project-count">04</strong><small data-i18n="projectsStat">PROYECTOS</small></div><span class="stat-sep"></span><div><strong>2</strong><small data-i18n="platformsStat">PLATAFORMAS</small></div><span class="stat-sep"></span><div><strong>∞</strong><small data-i18n="curiosityStat">CURIOSIDAD</small></div></div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="grid-plane"></div><div class="halo halo-a"></div><div class="halo halo-b"></div><div class="floating-console"><div class="console-reflection"></div><div class="top-meta"><span>RETRO64 / COLLECTION</span><span>● LIVE PREVIEW</span></div><div class="mini-grid">
+        <span class="mini-cover c1"><b>THE<br>LEGEND<br>OF ZELDA</b></span><span class="mini-cover c2"><b>SUPER<br>MARIO<br>64</b></span><span class="mini-cover c3"><b>MAJORA'S<br>MASK</b></span><span class="mini-cover c4"><b>STAR<br>FOX<br>64</b></span><span class="mini-cover c5"><b>WAVE<br>RACE<br>64</b></span><span class="mini-cover c6"><b>GOLDEN<br>EYE<br>007</b></span><span class="mini-cover c7"><b>F-ZERO<br>X</b></span><span class="mini-cover c8"><b>BANJO<br>KAZOOIE</b></span><span class="mini-cover c9"><b>MARIO<br>KART<br>64</b></span><span class="mini-cover c10"><b>PERFECT<br>DARK</b></span><span class="mini-cover c11"><b>POKÉMON<br>STADIUM</b></span><span class="mini-cover c12"><b>1080°<br>SNOW</b></span>
+      </div><div class="console-footer"><span>YOUR LIBRARY. REIMAGINED.</span><span class="console-progress"></span></div></div><div class="orbit-label">64-BIT<br><b>CREATIVE LAB</b></div></div>
+    </section>
+    <section class="projects-section section-wrap" id="proyectos"><div class="section-heading"><div><div class="overline"><span class="line"></span><span data-i18n="labCollection">LA COLECCIÓN</span></div><h2><span data-i18n="projectsHead1">Software hecho para</span><br><span class="muted-head" data-i18n="projectsHead2">seguir jugando.</span></h2></div><p data-i18n="projectsDescription">Explora las aplicaciones y proyectos del laboratorio. Cada herramienta tiene su propia historia.</p></div>
+      <div class="toolbar"><div class="filter-group" id="filters" role="group" aria-label="Filtrar proyectos"><button data-filter="all" class="active" data-i18n="filterAll">Todos</button><button data-filter="editor" data-i18n="filterEditors">Editores</button><button data-filter="utility" data-i18n="filterUtility">Herramientas</button><button data-filter="menu" data-i18n="filterMenus">Menús</button></div><label class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.7" cy="10.7" r="6.5"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Buscar proyectos..." data-placeholder-es="Buscar proyectos..." data-placeholder-en="Search projects..." aria-label="Buscar proyectos"></label></div>
+      <div class="project-grid" id="project-grid" aria-live="polite"></div><div class="empty-state" id="empty-state" hidden><h3 data-i18n="noResults">No hay proyectos que coincidan.</h3><p data-i18n="trySearch">Prueba otra palabra o elimina el filtro.</p></div>
+    </section>
+    <section class="feature-band section-wrap" id="acerca"><div class="feature-inner"><div class="feature-icon">✦</div><div><div class="overline" data-i18n="aboutEyebrow">SOBRE EL LABORATORIO</div><h2 data-i18n="aboutTitle">Hecho por una persona. Para toda una comunidad.</h2><p data-i18n="aboutText">Retro64 Labs reúne proyectos personales de software para Nintendo 64, SummerCart64 y Analogue 3D: herramientas para conservar partidas, experimentar con el hardware y disfrutar de los clásicos de otra forma.</p><p class="author-signature"><span data-i18n="byAuthor">Desarrollado por</span> <strong id="author-name">Alejandro Lázaro</strong></p></div></div></section>
+  </main>
+  <footer class="footer section-wrap"><div><span class="footer-logo">RETRO<span>64</span> LABS</span><p data-i18n="footerDesc">Un laboratorio independiente para una consola inolvidable.</p></div><div class="footer-right"><span>© <span id="year"></span> RETRO64 LABS</span><span data-i18n="independent">Proyecto independiente, no afiliado a Nintendo ni Analogue.</span></div></footer>
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title"><div class="dialog-inner"><button class="dialog-close" id="close-dialog" aria-label="Cerrar">✕</button><div class="dialog-visual" id="dialog-visual"></div><div class="dialog-copy"><span class="detail-tag" id="detail-tag"></span><h2 id="detail-title"></h2><p id="detail-description"></p><div class="detail-line"><span data-i18n="platform">PLATAFORMA</span><strong id="detail-platform"></strong></div><div class="detail-line"><span data-i18n="version">VERSIÓN</span><strong id="detail-version"></strong></div><div id="detail-actions" class="detail-actions"></div><p class="download-note" id="detail-note"></p></div></div></dialog>
+</body>
+</html>
