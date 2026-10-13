@@ -43,8 +43,8 @@ const PROJECTS = [
     }
   },
   {
-    id: "premium", category: "menu", art: "premium", version: "",
-    platform: "Nintendo 64 · SummerCart64", releaseRepo: "", releaseAssetContains: "", downloadUrl: "", sourceUrl: "",
+    id: "premium", category: "menu", art: "premium", version: "0.3.4",
+    platform: "Nintendo 64 · SummerCart64", releaseRepo: "", releaseAssetContains: "", downloadUrl: "https://github.com/gc9dd9gjpw-ai/sc64-premium/releases/download/0.3.4/SC64-Enhanced-Premium-0.3.4.zip", sourceUrl: "https://github.com/gc9dd9gjpw-ai/sc64-premium/releases/tag/0.3.4",
     name: "SC64 PREMIUM",
     description: {
       es: "Menú visual para SummerCart64 con una biblioteca de carátulas 5×5, navegación con mando y lanzamiento de juegos.",
