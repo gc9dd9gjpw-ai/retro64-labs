@@ -29,8 +29,8 @@ const PROJECTS = [
     platform: "Windows · Analogue 3D", releaseRepo: "", releaseAssetContains: "", downloadUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/download/1.2.4/Majora-Memory-Studio-v1.2.4-Windows.zip", sourceUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/tag/1.2.4",
     name: "Majora Memory Studio",
     description: {
-      es: "Herramienta para trabajar con las partidas de Majora's Mask recuperadas de Memories de Analogue 3D.",
-      en: "A tool for working with Majora's Mask save data recovered from Analogue 3D Memories."
+      es: "Editor de Memories de Majora's Mask recuperadas de Memories de Analogue 3D.",
+      en: "A Memory editor for Majora's Mask save data recovered from Analogue 3D Memories."
     }
   },
   {
