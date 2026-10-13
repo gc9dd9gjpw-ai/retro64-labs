@@ -91,58 +91,36 @@ let searchTerm = '';
 let currentProjectId = null;
 const releases = new Map();
 
-const DOWNLOAD_REPOS = {
-  ocarina: "gc9dd9gjpw-ai/Ocarina-Memory-Editor-Analogue-3D",
-  majora: "gc9dd9gjpw-ai/majora-memory-studio",
-  manager: "gc9dd9gjpw-ai/sc64-enhanced-manager",
-  premium: "gc9dd9gjpw-ai/sc64-premium"
-};
 const downloadCounts = new Map();
-function isProgramAsset(project, asset) {
-  const name = asset.name || "";
-  if (asset.state !== "uploaded" || !Number.isSafeInteger(asset.download_count) || asset.download_count < 0) return false;
-  if (/(fuentes|source|compilacion|compilation|symbols|debug)/i.test(name)) return false;
-  const patterns = {
-    ocarina: /^Ocarina[-_]Memory[-_]Editor.*Windows\.zip$/i,
-    majora: /^Majora[-_]Memory[-_](Studio|Editor).*Windows\.zip$/i,
-    manager: /^SC64[-_]Enhanced[-_]Manager.*\.zip$/i,
-    premium: /^SC64[-_](Enhanced[-_])?Premium.*\.zip$/i
-  };
-  return Boolean(patterns[project.id]?.test(name));
-}
+const COUNTS_URL = "https://raw.githubusercontent.com/gc9dd9gjpw-ai/retro64-labs/main/assets/download-counts.json";
 function downloadsLabel(project) {
   const value = downloadCounts.get(project.id);
   const label = language === 'es' ? 'Descargas' : 'Downloads';
-  if (value === undefined) return label + ': …';
-  if (value === null) return label + ': ' + (language === 'es' ? 'no disponible' : 'unavailable');
+  if (value === undefined || value === null) return label + ': …';
   return label + ': ' + new Intl.NumberFormat(language === 'es' ? 'es-ES' : 'en-US').format(value);
 }
-async function countProjectDownloads(project) {
-  const repo = DOWNLOAD_REPOS[project.id];
-  if (!repo) return null;
-  let total = 0;
-  for (let page = 1; ; page++) {
-    const response = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=100&page=${page}`, {
-      headers: { Accept: 'application/vnd.github+json' },
-      signal: AbortSignal.timeout(15000)
-    });
-    if (!response.ok) throw new Error('Downloads unavailable');
-    const rows = await response.json();
-    if (!Array.isArray(rows)) throw new Error('Invalid releases response');
-    for (const release of rows) {
-      if (release.draft) continue;
-      for (const asset of release.assets || []) {
-        if (isProgramAsset(project, asset)) total += asset.download_count;
-      }
-    }
-    if (rows.length < 100) return total;
-  }
-}
 async function checkDownloadCounts() {
-  await Promise.all(PROJECTS.map(async project => {
-    try { downloadCounts.set(project.id, await countProjectDownloads(project)); }
-    catch { downloadCounts.set(project.id, null); }
-  }));
+  async function loadCounts(url) {
+    const response = await fetch(url, {cache: 'no-store'});
+    if (!response.ok) throw new Error('No se pueden cargar los contadores');
+    const data = await response.json();
+    if (!data || !data.counts) throw new Error('Formato de contadores incorrecto');
+    for (const p of PROJECTS) {
+      const v = data.counts[p.id];
+      if (!Number.isSafeInteger(v) || v < 0) throw new Error('Contador inválido: ' + p.id);
+    }
+    return data.counts;
+  }
+  let values;
+  try {
+    // Read branch data directly, even if Pages has not rebuilt.
+    const fiveMinuteBucket = Math.floor(Date.now() / 300000);
+    values = await loadCounts(COUNTS_URL + '?v=' + fiveMinuteBucket);
+  } catch (_) {
+    try { values = await loadCounts(new URL('assets/download-counts.json', document.baseURI).href); }
+    catch (_) { return; }
+  }
+  for (const p of PROJECTS) downloadCounts.set(p.id, values[p.id]);
   renderProjects();
 }
 
