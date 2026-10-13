@@ -25,9 +25,9 @@ const PROJECTS = [
     }
   },
   {
-    id: "majora", category: "editor", art: "majora", version: "1.2.2 Public Beta",
-    platform: "Windows · Analogue 3D", releaseRepo: "", releaseAssetContains: "", downloadUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/download/V1.2.2/Majora-Memory-Studio-v1.2.2-Public-Beta-Windows.zip", sourceUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/tag/V1.2.2",
-    name: "Majora's Mask Memory Editor",
+    id: "majora", category: "editor", art: "majora", version: "1.2.4",
+    platform: "Windows · Analogue 3D", releaseRepo: "", releaseAssetContains: "", downloadUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/download/1.2.4/Majora-Memory-Studio-v1.2.4-Windows.zip", sourceUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/tag/1.2.4",
+    name: "Majora Memory Studio",
     description: {
       es: "Herramienta para trabajar con las partidas de Majora's Mask recuperadas de Memories de Analogue 3D.",
       en: "A tool for working with Majora's Mask save data recovered from Analogue 3D Memories."
@@ -181,4 +181,3 @@ function init(){
   checkReleases();
 }
 init();
-
