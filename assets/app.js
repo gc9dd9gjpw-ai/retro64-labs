@@ -34,8 +34,8 @@ const PROJECTS = [
     }
   },
   {
-    id: "manager", category: "utility", art: "manager", version: "",
-    platform: "Windows · SummerCart64", releaseRepo: "", releaseAssetContains: "", downloadUrl: "", sourceUrl: "",
+    id: "manager", category: "utility", art: "manager", version: "1.0",
+    platform: "Windows · SummerCart64", releaseRepo: "", releaseAssetContains: "", downloadUrl: "https://github.com/gc9dd9gjpw-ai/sc64-enhanced-manager/releases/download/1.0/SC64_Enhanced_Manager.zip", sourceUrl: "https://github.com/gc9dd9gjpw-ai/sc64-enhanced-manager/releases/tag/1.0",
     name: "SC64 Enhanced Manager",
     description: {
       es: "Prepara tu biblioteca N64 desde Windows: detección de ROMs, carátulas y gestión de códigos GameShark para SummerCart64.",
