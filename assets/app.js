@@ -16,8 +16,8 @@ const SITE = {
  */
 const PROJECTS = [
   {
-    id: "ocarina", category: "editor", art: "ocarina", version: "",
-    platform: "Windows · Analogue 3D", releaseRepo: "", releaseAssetContains: "", downloadUrl: "", sourceUrl: "",
+    id: "ocarina", category: "editor", art: "ocarina", version: "3.2.1",
+    platform: "Windows · Analogue 3D", releaseRepo: "", releaseAssetContains: "", downloadUrl: "https://github.com/gc9dd9gjpw-ai/Ocarina-Memory-Editor-Analogue-3D/releases/download/v3.2.1/Ocarina-Memory-Editor-v3.2.1-Windows.zip", sourceUrl: "https://github.com/gc9dd9gjpw-ai/Ocarina-Memory-Editor-Analogue-3D/releases/tag/v3.2.1",
     name: "Ocarina Memory Editor",
     description: {
       es: "Editor de Memories de The Legend of Zelda: Ocarina of Time. Explora y modifica partidas guardadas dentro de las capturas de Analogue 3D.",
@@ -25,8 +25,8 @@ const PROJECTS = [
     }
   },
   {
-    id: "majora", category: "editor", art: "majora", version: "",
-    platform: "Windows · Analogue 3D", releaseRepo: "", releaseAssetContains: "", downloadUrl: "", sourceUrl: "",
+    id: "majora", category: "editor", art: "majora", version: "1.2.2 Public Beta",
+    platform: "Windows · Analogue 3D", releaseRepo: "", releaseAssetContains: "", downloadUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/download/V1.2.2/Majora-Memory-Studio-v1.2.2-Public-Beta-Windows.zip", sourceUrl: "https://github.com/gc9dd9gjpw-ai/majora-memory-studio/releases/tag/V1.2.2",
     name: "Majora's Mask Memory Editor",
     description: {
       es: "Herramienta para trabajar con las partidas de Majora's Mask recuperadas de Memories de Analogue 3D.",
@@ -181,3 +181,4 @@ function init(){
   checkReleases();
 }
 init();
+
