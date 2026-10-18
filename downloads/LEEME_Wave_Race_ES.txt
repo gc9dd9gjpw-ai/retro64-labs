@@ -1,0 +1,40 @@
+RETRO64LAB — WAVE RACE 64: DOLPHIN & ORCA MOD v1.0
+
+MOD PARA LA VERSION ORIGINAL DEL JUEGO. NO INCLUYE LA ROM COMERCIAL.
+
+JUEGO ORIGINAL REQUERIDO
+Wave Race 64 - Kawasaki Jet Ski (USA) (Rev 1 / Rev A)
+Formato: .z64 (big-endian)
+Tamaño: 8.388.608 bytes (8 MiB)
+SHA-1: 508dfc2d4caa42b6f6de5263d0aed5e44ac7966a
+
+INSTALACION
+1. Extrae el parche Retro64Lab_Wave_Race_Dolphin_Orca_v1.0.bps.
+2. Abre Floating IPS (Flips) u otro parcheador compatible con BPS.
+3. Selecciona "Apply Patch" y el archivo .bps.
+4. Selecciona una copia limpia de Wave Race 64 USA Rev 1 en formato .z64.
+5. Guarda la salida con otro nombre (no sobrescribas tu ROM original).
+6. Juega a la ROM resultante en tu dispositivo o emulador compatible.
+
+COMPROBACION DEL RESULTADO
+SHA-256 de la ROM modificada correcta:
+6a71508e1bf529c93d146a3a49d545d3b4463c862eaefe9402a8e1622f69012c
+SHA-256 del archivo .bps:
+565c551666bcbc3c3a161f97ee3ac13b1d31197bc5881e85afca8aa3a35d5212
+Si el parcheador avisa de que la ROM no coincide, NO fuerces su aplicacion.
+No es compatible con ROM PAL, USA Rev 0, version japonesa ni ROMs ya modificadas.
+
+CONTROLES AL CONFIRMAR PILOTO (MODO UN JUGADOR)
+- Cruceta ABAJO + START: delfin
+- Boton R + START: orca
+- START normal: moto acuatica
+
+ESTADO Y LIMITACIONES
+- Modo individual con animales: probado por el creador en Analogue 3D.
+- El modo VS con dos elecciones independientes NO esta incluido en esta version.
+- NO se incluyen pruebas VS experimentales 02-05.
+- El parche se genero desde la ROM limpia con hash exacto y se aplico de vuelta;
+  su salida fue IDENTICA byte a byte a la ROM estable ya probada.
+- Esta prueba garantiza la equivalencia del archivo, no compatibilidad universal de hardware.
+
+El paquete distribuye exclusivamente un parche BPS, no el juego completo.

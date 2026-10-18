@@ -1,0 +1,11 @@
+Retro64Lab Wave Race 64 Dolphin & Orca Mod v1.0
+ROM original SHA1: 508dfc2d4caa42b6f6de5263d0aed5e44ac7966a
+ROM original SHA256: f35d2423ebcb86eaf86fa935b613c7532b123a7bc50fb74996984c3b02fc3999
+ROM destino SHA256: 6a71508e1bf529c93d146a3a49d545d3b4463c862eaefe9402a8e1622f69012c
+BPS SHA256: 565c551666bcbc3c3a161f97ee3ac13b1d31197bc5881e85afca8aa3a35d5212
+BPS size bytes: 1354
+Source size bytes: 8388608
+Target size bytes: 8388608
+BPS CRC32: 2144DF1C
+Validacion: BPS aplicado sobre original produce ROM destino IDENTICA byte por byte.
+No distribuir la ROM original ni la modificada.

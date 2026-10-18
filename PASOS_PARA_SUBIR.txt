@@ -1,0 +1,42 @@
+RETRO64 LABS — PUBLICAR EL MOD DE WAVE RACE 64 EN GITHUB PAGES
+
+Enlace del repositorio: https://github.com/gc9dd9gjpw-ai/retro64-labs
+
+PASOS
+1. Descomprime ESTE archivo ZIP.
+2. Abre https://github.com/gc9dd9gjpw-ai/retro64-labs/upload/main
+3. Sube el archivo index.html y las carpetas assets y downloads,
+   MANTENIENDO LAS RUTAS DE CARPETA. Selecciona los archivos extraídos,
+   no subas el ZIP como archivo único.
+4. Al aparecer la confirmación, guarda con "Commit changes" sobre main.
+5. Espera a que GitHub Pages publique la nueva versión.
+6. Abre https://gc9dd9gjpw-ai.github.io/retro64-labs/
+   Comprueba que hay 5 proyectos y que Wave Race tiene su ficha y descarga.
+7. Si usas móvil y no puedes subir carpetas con rutas preservadas,
+   haz la operación desde un ordenador para mantener assets/ y downloads/.
+
+SE SUSTITUYE
+- index.html (solo se añaden dos referencias a nuevos assets y botón Mods).
+
+SE AÑADE
+- assets/wave-race.js (nueva ficha, textos ES/EN, instrucciones)
+- assets/wave-race.css (estilo de la nueva tarjeta)
+- downloads/Retro64Lab_Wave_Race_Dolphin_Orca_v1.0.bps
+- downloads/LEEME_Wave_Race_ES.txt
+- downloads/README_Wave_Race_EN.txt
+- downloads/CHECKSUMS_Wave_Race.txt
+
+NO SE CAMBIA
+- assets/app.js, assets/site.css, ningún código de los cuatro proyectos.
+- .github/workflows/update-download-counts.yml, cuentas existentes.
+- No se sube NINGUNA ROM .z64 comercial, original ni modificada.
+
+NOTAS
+- Wave Race 64: USA Rev 1/Rev A, .z64, SHA-1: 508dfc2d4caa42b6f6de5263d0aed5e44ac7966a.
+- El botón descarga SOLO el parche BPS. Para aplicarlo hay que usar un parcheador BPS (por ejemplo Floating IPS).
+- Las descargas del BPS no se suman al contador de ZIPs de GitHub Releases de los otros programas.
+- Esta versión se probó en modo individual; no anuncia modo VS con dos animales.
+
+SI ALGO SALE MAL
+- Ve a la sección Commits del repositorio y usa Revert para volver al estado anterior.
+- La copia de la ROM de trabajo original NO se modifica ni se publica.

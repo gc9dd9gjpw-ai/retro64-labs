@@ -1,0 +1,14 @@
+/* Dedicated card artwork for the Wave Race 64 mod; existing designs unchanged. */
+.card-art[data-art="waverace"],
+.dialog-visual[data-art="waverace"] {
+  background: radial-gradient(ellipse at 65% 20%, #36bce28e, transparent 56%),
+              linear-gradient(145deg, #153d53, #071b34);
+}
+.art-decoration.waverace {
+  width: 170px;
+  height: 145px;
+  border-radius: 30px;
+  transform: rotate(-5deg);
+  border-color: #7ee3f555;
+}
+.art-decoration.waverace svg { width: 125px; height: 115px; }
