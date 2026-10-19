@@ -11,9 +11,8 @@
   const id = 'waverace';
   if (PROJECTS.some(project => project.id === id)) return;
 
-  const path = 'downloads/Retro64Lab_Wave_Race_Dolphin_Orca_v1.0.bps';
   const base = document.baseURI;
-  const url = new URL(path, base).href;
+  const url = 'https://github.com/gc9dd9gjpw-ai/retro64-labs/releases/download/wave-race-v1.0/Retro64Lab_Wave_Race_Dolphin_Orca_v1.0.bps';
   const instructions = {
     es: new URL('downloads/LEEME_Wave_Race_ES.txt', base).href,
     en: new URL('downloads/README_Wave_Race_EN.txt', base).href
@@ -43,38 +42,7 @@
     }
   });
 
-  /* The existing counters refer to GitHub release ZIPs for the first four apps.
-     The downloadable BPS is hosted on Pages and has no comparable release count.
-     Preserve existing counts, without pretending the new patch has a known count. */
-  const previousDownloadsLabel = downloadsLabel;
-  downloadsLabel = function(project) {
-    if (project.id === id) return language === 'es' ? 'Parche BPS · ROM original requerida' : 'BPS patch · original ROM required';
-    return previousDownloadsLabel(project);
-  };
-
-  /* app.js expects every project to exist in download-counts.json, but the
-     hourly workflow deliberately counts only the four original release apps.
-     Read those counts without treating the BPS-only mod as an error. */
-  checkDownloadCounts = async function() {
-    const cacheKey = Math.floor(Date.now() / 300000);
-    const sources = [COUNTS_URL + '?v=' + cacheKey, new URL('assets/download-counts.json', base).href];
-    for (const source of sources) {
-      try {
-        const response = await fetch(source, {cache: 'no-store'});
-        if (!response.ok) continue;
-        const data = await response.json();
-        if (!data || typeof data.counts !== 'object') continue;
-        for (const project of PROJECTS) {
-          if (project.id === id) continue;
-          const value = data.counts[project.id];
-          if (Number.isSafeInteger(value) && value >= 0) downloadCounts.set(project.id, value);
-        }
-        renderProjects();
-        return;
-      } catch (_) { /* If offline, keep the existing counters as unavailable. */ }
-    }
-  };
-
+  // Use the shared real GitHub Releases counters, including waverace.
   const originalOpenDetails = openDetails;
   openDetails = function(projectId, refresh = false) {
     originalOpenDetails(projectId, refresh);
@@ -87,9 +55,10 @@
     link.rel = 'noopener noreferrer';
     link.textContent = locale === 'es' ? 'Instrucciones ↗' : 'Instructions ↗';
     document.querySelector('#detail-actions').append(link);
-    document.querySelector('#detail-note').textContent = locale === 'es'
+    const counter = downloadsLabel(PROJECTS.find(project => project.id === id));
+    document.querySelector('#detail-note').textContent = counter + '. ' + (locale === 'es'
       ? 'Se descarga solamente un parche BPS. Necesitas una ROM limpia Wave Race 64 USA Rev 1 (.z64); no incluye el juego. Modo VS con dos animales no disponible en v1.0.'
-      : 'BPS patch only. Requires a clean Wave Race 64 USA Rev 1 (.z64) dump; game not included. Two-animal VS is not supported in v1.0.';
+      : 'BPS patch only. Requires a clean Wave Race 64 USA Rev 1 (.z64) dump; game not included. Two-animal VS is not supported in v1.0.');
   };
 
   renderLanguage();
