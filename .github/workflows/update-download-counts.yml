@@ -46,12 +46,14 @@ jobs:
               "majora": "majora-memory-studio",
               "manager": "sc64-enhanced-manager",
               "premium": "sc64-premium",
+              "waverace": "retro64-labs",
           }
           PATTERNS = {
               "ocarina": re.compile(r"^Ocarina[-_]Memory[-_]Editor.*Windows\.zip$", re.I),
               "majora": re.compile(r"^Majora[-_]Memory[-_](Studio|Editor).*Windows\.zip$", re.I),
               "manager": re.compile(r"^SC64[-_]Enhanced[-_]Manager.*\.zip$", re.I),
               "premium": re.compile(r"^SC64[-_](Enhanced[-_])?Premium.*\.zip$", re.I),
+              "waverace": re.compile(r"^Retro64Lab_Wave_Race_Dolphin_Orca_v1\.0\.bps$"),
           }
           
           def get_releases(repo, page):
@@ -69,10 +71,13 @@ jobs:
           
           def count_releases(project, repo):
               total = 0
+              matched = False
               for page in range(1, 31):
                   releases = get_releases(repo, page)
                   for release in releases:
                       if release.get("draft"):
+                          continue
+                      if project == "waverace" and release.get("tag_name") != "wave-race-v1.0":
                           continue
                       for asset in release.get("assets", []):
                           name = asset.get("name", "")
@@ -81,7 +86,10 @@ jobs:
                                   and number >= 0 and PATTERNS[project].fullmatch(name)
                                   and not re.search(r"fuentes|source|compilacion|compilation|symbols|debug", name, re.I)):
                               total += number
+                              matched = True
                   if len(releases) < 100:
+                      if project == "waverace" and not matched:
+                          raise RuntimeError("No se encuentra el BPS de wave-race-v1.0; se conservan los contadores anteriores")
                       return total
               raise RuntimeError(f"Demasiadas paginas de releases para {repo}")
           
