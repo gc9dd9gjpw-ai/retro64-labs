@@ -38,8 +38,8 @@
     releaseRepo: '', releaseAssetContains: '', downloadUrl: url, sourceUrl: '',
     name: 'Wave Race 64: Dolphin & Orca Mod',
     description: {
-      es: '¡Surca las olas con un delfín o una orca! En un jugador: ABAJO + START = delfín, R + START = orca, START = moto. Parche BPS para Wave Race 64 USA Rev 1. Requiere la ROM original. VS con dos animales no incluido.',
-      en: 'Ride a dolphin or an orca! In single player: DOWN + START = dolphin, R + START = orca, START = jet ski. BPS patch for Wave Race 64 USA Rev 1. Clean original ROM required. Independent two-animal VS is not included.'
+      es: '¡Surca las olas con un delfín o una orca! En un jugador: Delfín: stick analógico hacia abajo y confirmar dos veces con A o START. Orca: mantener R, sin mover el stick analógico, y confirmar dos veces con A o START. START = moto. Parche BPS para Wave Race 64 USA Rev 1. Requiere la ROM original. VS con dos animales no incluido.',
+      en: 'Ride a dolphin or an orca! In single player: Dolphin: hold the analog stick down and confirm twice with A or START. Orca: hold R, without moving the analog stick, and confirm twice with A or START. START = jet ski. BPS patch for Wave Race 64 USA Rev 1. Clean original ROM required. Independent two-animal VS is not included.'
     }
   });
 
