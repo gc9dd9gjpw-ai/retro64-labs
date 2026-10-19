@@ -25,8 +25,8 @@ If your patcher reports a source mismatch, do NOT force the patch.
 PAL, USA Rev 0, Japanese, and previously modified ROMs are not supported.
 
 CONTROLS WHEN CONFIRMING A RIDER (SINGLE PLAYER)
-- D-pad DOWN + START: dolphin
-- R button + START: orca
+- Dolphin: hold the analog stick down and confirm twice with A or START.
+- Orca: hold R, without moving the analog stick, and confirm twice with A or START.
 - START alone: normal jet ski
 
 STATUS AND LIMITATIONS
