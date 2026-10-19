@@ -25,8 +25,8 @@ Si el parcheador avisa de que la ROM no coincide, NO fuerces su aplicacion.
 No es compatible con ROM PAL, USA Rev 0, version japonesa ni ROMs ya modificadas.
 
 CONTROLES AL CONFIRMAR PILOTO (MODO UN JUGADOR)
-- Cruceta ABAJO + START: delfin
-- Boton R + START: orca
+- Delfín: stick analógico hacia abajo y confirmar dos veces con A o START.
+- Orca: mantener R, sin mover el stick analógico, y confirmar dos veces con A o START.
 - START normal: moto acuatica
 
 ESTADO Y LIMITACIONES
